@@ -45,7 +45,9 @@ logger.setLevel(level=level)
 # Set up the logging file
 path_file_log = parse_path(config["logging"]["path_file_log"])
 os.makedirs(os.path.dirname(path_file_log), exist_ok=True)
-format_logging = logging.Formatter('%(asctime)s::%(name)s::[%(levelname)s]::%(message)s')
+format_logging = logging.Formatter(
+    "%(asctime)s::%(name)s::[%(levelname)s]::%(message)s"
+)
 
 # Set up handlers
 ## File handler

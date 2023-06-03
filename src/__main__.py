@@ -1,3 +1,4 @@
+import ast
 import configparser
 from pathlib import Path
 
@@ -13,12 +14,12 @@ def main():
     config = configparser.ConfigParser()
     config.read(Path(__file__).parent.parent / "config.ini")
 
-    # Setup paths
-    path_file_log = parse_path(config["logging"]["path_file_log"])
-    path_file_last_feed = parse_path(config["path"]["path_file_last_feed"])
+    feeder = Feeder(
+        feeding_hours=ast.literal_eval(config["parameters"]["feeding_hours"]),
+        path_file_last_feed=parse_path(config["path"]["path_file_last_feed"]),
+    )
 
-    motor = MotorInterface()
-    feeder = Feeder(motor=motor, path_file_last_feed=path_file_last_feed)
+    feeder.check_feeding_time()
 
 
 if __name__ == "__main__":
