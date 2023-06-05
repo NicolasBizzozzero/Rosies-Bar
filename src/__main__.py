@@ -1,8 +1,9 @@
 import ast
 import configparser
+import signal
 from pathlib import Path
 
-from common import parse_path
+from common import parse_path, every, signal_handler_exit
 from feeder import Feeder
 from motor import MotorInterface
 
@@ -20,6 +21,7 @@ def main():
     )
 
     feeder.check_feeding_time()
+    every(feeder.check_feeding_time, delay=int(config["parameters"]["checking_every"]))
 
 
 if __name__ == "__main__":

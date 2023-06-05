@@ -1,7 +1,10 @@
 import datetime
+import functools
 import os.path
+import sys
 import time
 import traceback
+from zoneinfo import ZoneInfo
 
 
 def parse_path(path: str) -> str:
@@ -17,6 +20,35 @@ def get_date_today() -> str:
     return datetime.datetime.now().date().__str__()
 
 
+def utctime_to_localtime(utc_time: datetime.datetime) -> datetime.datetime:
+    utctime = utc_time.replace(tzinfo=ZoneInfo("UTC"))
+    return utctime.astimezone(ZoneInfo("localtime"))
+
+
+def signal_handler_exit(signal, frame):
+    sys.exit(0)
+
+
+def catch_all_exceptions(function):
+    """Decorator catching all exceptions occurring during the function execution and logging their stacktrace.
+    Logging them as warning to not halt the whole software process.
+    """
+
+    from logger import logger
+
+    @functools.wraps(function)
+    def wrapper(*arg, **kwargs):
+        try:
+            function(*arg, **kwargs)
+        except Exception as exception:
+            logger.warning(
+                f'Exception "{type(exception).__name__}" caught :\n{traceback.format_exc()}'
+            )
+
+    return wrapper
+
+
+@catch_all_exceptions
 def every(function: callable, delay):
     """Call a function every `delay` seconds.
 
@@ -37,14 +69,11 @@ def every(function: callable, delay):
     Source:
       * https://stackoverflow.com/a/49801719
     """
+
     next_time = time.time() + delay
     while True:
         time.sleep(max(0, next_time - time.time()))
-        try:
-            function()
-        except Exception:
-            traceback.print_exc()
-            # in production code you might want to have this instead of course:
-            # logger.exception("Problem while executing repetitive task.")
+        function()
+
         # skip tasks if we are behind schedule:
         next_time += (time.time() - next_time) // delay * delay + delay
