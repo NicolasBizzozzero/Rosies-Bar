@@ -5,6 +5,11 @@ Automatic dog-feeder.
 # Installation
 ```shell
 git clone https://github.com/NicolasBizzozzero/Rosies-Bar
+```
+
+
+# Running
+```shell
 ./script/docker_build.sh
 ./script/docker_run.sh
 ```

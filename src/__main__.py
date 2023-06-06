@@ -2,14 +2,10 @@
 
 import ast
 import configparser
-import signal
 from pathlib import Path
 
 from common import parse_path, every
 from feeder import Feeder
-from motor import MotorInterface
-
-from logger import logger
 
 
 def main():
