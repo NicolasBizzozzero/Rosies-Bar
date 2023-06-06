@@ -1,12 +1,17 @@
 # Rosies-Bar
-Automatic dog-feeder
+Automatic dog-feeder.
+
+
+# Installation
+```shell
+git clone https://github.com/NicolasBizzozzero/Rosies-Bar
+./script/docker_build.sh
+./script/docker_run.sh
+```
 
 
 # TODO
-* Automatic timestamping after feeding. TO check if the dog has not been previously feed (ie. after a reboot)
-* Force feeding with external button.
 * Automatic software launching (systemd job ?)
-* Check every minute for feeding (cron job ? cron-like python lib?)
 
 
 # FAQ

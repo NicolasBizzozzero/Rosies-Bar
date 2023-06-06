@@ -1,13 +1,14 @@
+""" Module containing all utility functions. """
+
 import datetime
 import functools
 import os.path
-import sys
 import time
 import traceback
-from zoneinfo import ZoneInfo
 
 
 def parse_path(path: str) -> str:
+    """Parse a given path with an optional date reformat and an automatic conversion to absolute path."""
     if "{date}" in path:
         path = path.format(date=get_date_today())
     path = os.path.expanduser(path)
@@ -18,15 +19,6 @@ def parse_path(path: str) -> str:
 def get_date_today() -> str:
     """Returns today's date in a readable YYYY-MM-DD format."""
     return datetime.datetime.now().date().__str__()
-
-
-def utctime_to_localtime(utc_time: datetime.datetime) -> datetime.datetime:
-    utctime = utc_time.replace(tzinfo=ZoneInfo("UTC"))
-    return utctime.astimezone(ZoneInfo("localtime"))
-
-
-def signal_handler_exit(signal, frame):
-    sys.exit(0)
 
 
 def catch_all_exceptions(function):

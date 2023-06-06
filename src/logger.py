@@ -10,10 +10,8 @@ from logger import logger
 """
 
 import configparser
-import datetime
 import logging
 import os
-import sys
 
 from pathlib import Path
 

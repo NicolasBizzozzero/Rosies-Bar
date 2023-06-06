@@ -1,3 +1,5 @@
+"""Motor interface designed to interact with hardware-dependent controller. """
+
 from logger import logger
 
 

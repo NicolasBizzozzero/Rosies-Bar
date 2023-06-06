@@ -1,7 +1,15 @@
-import ast
+"""Automatic dog feeder.
+The feeder keep a timestamp in a file to check when was the last time the animal has been fed.
+It also instantiates a motor interface (which is hardware dependent).
+The class provides two main methods :
+  * feed : Feed the animal. Can be called alone to force-feed the animal, or is call automatically
+      by check_feeding_time.
+  * check_feeding_time : Check with the local timestamp if it is feeding time. Is designed to be called
+      periodically.
+"""
+
 import datetime
 import os.path
-from zoneinfo import ZoneInfo
 
 from logger import logger
 from motor import MotorInterface
@@ -20,10 +28,13 @@ class Feeder:
             self.feed()
 
     def feed(self):
-        logger.info("Feeding [NOT IMPLEMENTED]")
+        """Force a feed to the animal. Use the motor interface then update the last_time_feed timestamp."""
+        logger.info("Feeding time !")
+        self.motor.rotation(quadrant=1)
         self._set_last_time_feed(date=datetime.datetime.now())
 
     def check_feeding_time(self):
+        """Check with the local timestamp if it is feeding time. Is designed to be called periodically."""
         logger.debug("Checking if it is feeding time")
         last_time_feed = self._get_last_time_feed()
         next_feed_time = self._get_next_feed_time(last_time_feed)
@@ -43,6 +54,7 @@ class Feeder:
             )
 
     def _get_last_time_feed(self) -> datetime.datetime:
+        """Read the timestamp to retrieve the last time feed timestamp."""
         logger.debug("Retrieving last time feed")
         with open(self.path_file_last_feed) as fp:
             last_time_feed = fp.read()
@@ -51,6 +63,9 @@ class Feeder:
             return datetime.datetime.strptime(last_time_feed, "%Y-%m-%d %H:%M:%S.%f")
 
     def _set_last_time_feed(self, date: datetime.datetime):
+        """Set the last time feed timestamp into the file.
+        Hard set the timestamp to 59.99 seconds to correct a comparison issue.
+        """
         # Hard cast timedate to the max number of seconds and microseconds to correct a weird bug.
         date = date.replace(second=59, microsecond=99)
 
@@ -66,11 +81,11 @@ class Feeder:
         # Cases :
         # last_time_feed : "23:59", 02 juin -> "08:00", 03 juin [Case 1]
         # last_time_feed : "07:59", 03 juin -> "08:00", 03 juin [Case 3, 08:00]
-        # last_time_feed : "08:01", 03 juin -> "17:00", 03 juin [
-        # last_time_feed : "16:59", 03 juin -> "17:00", 03 juin
+        # last_time_feed : "08:01", 03 juin -> "17:00", 03 juin [Case 3]
+        # last_time_feed : "16:59", 03 juin -> "17:00", 03 juin [Case 3]
         # last_time_feed : "17:01", 03 juin -> "08:00", 04 juin [Case 1 or 2]
-        # last_time_feed : "00:01", 04 juin -> "08:00", 04 juin
-        # last_time_feed : "17:00", 05 juin -> "08:00", 06 juin
+        # last_time_feed : "00:01", 04 juin -> "08:00", 04 juin [Case 3]
+        # last_time_feed : "17:00", 05 juin -> "08:00", 06 juin [Case 3]
 
         # Updates feeding hours with "now" data (except for the hours and minutes)
         now = datetime.datetime.now()
@@ -116,10 +131,12 @@ class Feeder:
         )
 
     def _check_last_time_feed_timestamp_exists(self) -> bool:
+        """Check that the timestamp file exists"""
         return os.path.isfile(self.path_file_last_feed)
 
     @staticmethod
     def _typecast_feeding_hours(feeding_hours) -> list[datetime.datetime]:
+        """Type assert then type cast feeding hours into a datetime object."""
         assert type(feeding_hours) is list
         assert all(type(hours) is str for hours in feeding_hours)
         assert all(len(hours) == 5 for hours in feeding_hours)
