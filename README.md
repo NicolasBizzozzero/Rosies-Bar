@@ -1,4 +1,4 @@
-# Rosies-Bar 🐕
+# Rosie's Bar 🐕
 Automatic dog feeder in a portable Docker image.
 
 <p align="center">
