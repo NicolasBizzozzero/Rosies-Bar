@@ -1,7 +1,6 @@
 # Rosies-Bar
 Automatic dog feeder in a portable Docker image.
 
-![Rosie]()
 <p align="center">
   <img src="res/rosie.jpeg" width="800">
 </p>
