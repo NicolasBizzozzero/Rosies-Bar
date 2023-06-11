@@ -1,5 +1,7 @@
 # Rosies-Bar
-Automatic dog-feeder.
+Automatic dog feeder in a portable Docker image.
+
+![Reosie](res/rosie.jpeg)
 
 
 # Installation
@@ -15,11 +17,7 @@ git clone https://github.com/NicolasBizzozzero/Rosies-Bar
 ```
 
 
-# TODO
-* Automatic software launching (systemd job ?)
-
 
 # FAQ
 * What happens if a croquette is stuck between the motor ?
   * We specifically chose a motor strong enough to break the croquette if that happens.
-
