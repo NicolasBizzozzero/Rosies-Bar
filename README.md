@@ -2,7 +2,7 @@
 Automatic dog feeder in a portable Docker image.
 
 <p align="center">
-  <img src="res/rosie.jpeg" width="800">
+  <img src="res/rosie.jpeg" width="600">
 </p>
 
 ## Description
