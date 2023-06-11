@@ -1,4 +1,4 @@
-# Rosies-Bar
+# Rosies-Bar 🐕
 Automatic dog feeder in a portable Docker image.
 
 <p align="center">
@@ -6,7 +6,8 @@ Automatic dog feeder in a portable Docker image.
 </p>
 
 ## Description
-Automatically dispense food for your animal at different given hours of the day. This software is designed to be dumped as a Docker image into a Raspberry connected to a motor Controler. All hardware-related setup abd plans are currently not available on the repository.
+Automatically dispense food for your animal at different given hours of the day.  
+This software is designed to be dumped as a Docker image into a Raspberry connected to a motor Controler. All hardware-related setup and plans are currently not available on the repository.
 
 
 # Installation
